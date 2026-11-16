@@ -1,0 +1,24 @@
+{
+  "name": "hookbridge",
+  "version": "1.0.0",
+  "description": "HookBridge: Real-Time Meta Lead Ads Integration with React Native",
+  "private": true,
+  "scripts": {
+    "start:backend": "cd backend && npm run dev",
+    "start:mobile": "cd mobile && npm start",
+    "test:backend": "cd backend && npm test",
+    "test:mobile": "cd mobile && npm test",
+    "test": "npm run test:backend && npm run test:mobile"
+  },
+  "keywords": [
+    "meta-lead-ads",
+    "webhooks",
+    "react-native",
+    "socket.io",
+    "mongodb",
+    "express"
+  ],
+  "author": "Priyanshu Singh",
+  "license": "MIT"
+}
+
