@@ -53,3 +53,4 @@
 ### 4:00 - 4:45 | Conclusion
 - **Spoken**:
   > "This concludes our live working demonstration of HookBridge. The integration is fully functional, end-to-end, and verified against Meta's official Developer Platform. In our second video, we'll dive deep into the source code and architectural decisions. Thank you!"
+

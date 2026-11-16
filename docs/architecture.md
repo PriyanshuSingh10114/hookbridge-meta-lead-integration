@@ -130,3 +130,4 @@ sequenceDiagram
 - Powered by Socket.IO over WebSocket and polling fallback.
 - Broadcasts persisted lead objects under the `new_lead` event channel.
 - Automatically handles reconnection backoff and trackable connection state.
+

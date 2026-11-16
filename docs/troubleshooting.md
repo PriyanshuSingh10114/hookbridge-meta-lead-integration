@@ -72,3 +72,4 @@ This guide provides targeted diagnostics and resolutions for issues encountered 
 ### 4.2 Lead Appears in Backend But Not on Phone
 - **Diagnostic**: Check backend logs for `[SOCKET BROADCAST] Emitted 'new_lead' ... to X active client(s)`.
 - **Resolution**: If active clients is 0, verify the connection status badge on the mobile app is green ("Live Socket Connected"). Once connected, leads broadcast instantly.
+

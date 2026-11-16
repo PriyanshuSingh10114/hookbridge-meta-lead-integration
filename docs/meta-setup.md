@@ -132,3 +132,4 @@ Watch your system in action:
 4. Lead is saved into MongoDB.
 5. Socket.IO emits `new_lead`.
 6. Your open React Native app immediately displays the lead card with zero user action.
+

@@ -10,3 +10,4 @@ router.get('/meta', webhookController.verifyWebhook);
 router.post('/meta', verifyWebhookSignature, webhookController.handleWebhookEvent);
 
 module.exports = router;
+

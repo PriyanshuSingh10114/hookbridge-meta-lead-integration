@@ -60,3 +60,4 @@ describe('HookBridge Mobile Leads Logic Tests', () => {
     expect(getBadgeConfig('disconnected').label).toBe('Disconnected (Retrying...)');
   });
 });
+

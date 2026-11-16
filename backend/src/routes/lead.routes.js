@@ -9,3 +9,4 @@ router.get('/leads', leadController.getLeads);
 router.get('/leads/:id', leadController.getLeadById);
 
 module.exports = router;
+

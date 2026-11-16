@@ -43,3 +43,4 @@ This document outlines the architectural assumptions, trade-offs, and security p
 4. **Idempotency & Duplicate Protection**:
    - Meta webhooks guarantee *at-least-once* delivery, meaning network retries or multiple clicks from users can dispatch identical `leadgen_id` values.
    - HookBridge enforces database unique indexing and deduplication logic, ensuring duplicate webhook events are logged, updated if needed, and safely suppressed from duplicate broadcast alerts.
+

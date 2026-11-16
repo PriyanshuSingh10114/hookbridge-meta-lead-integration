@@ -112,3 +112,4 @@ describe('Meta Graph API Service Tests', () => {
     expect(metaGraphService.sanitizeToken(null)).toBe('none');
   });
 });
+

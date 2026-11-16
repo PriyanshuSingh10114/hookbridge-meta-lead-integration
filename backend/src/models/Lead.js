@@ -108,3 +108,4 @@ const LeadSchema = new mongoose.Schema(
 LeadSchema.index({ submittedAt: -1, leadId: 1 });
 
 module.exports = mongoose.model('Lead', LeadSchema);
+

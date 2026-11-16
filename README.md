@@ -375,3 +375,4 @@ For solutions to common setup issues, see [docs/troubleshooting.md](docs/trouble
 
 ## 📄 License
 This project is licensed under the MIT License. Developed for technical assessment & demonstration.
+
