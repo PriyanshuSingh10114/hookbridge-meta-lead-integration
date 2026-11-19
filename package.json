@@ -6,6 +6,7 @@
   "scripts": {
     "start:backend": "cd backend && npm run dev",
     "start:mobile": "cd mobile && npm start",
+    "trigger:lead": "cd backend && npm run trigger:lead",
     "test:backend": "cd backend && npm test",
     "test:mobile": "cd mobile && npm test",
     "test": "npm run test:backend && npm run test:mobile"
