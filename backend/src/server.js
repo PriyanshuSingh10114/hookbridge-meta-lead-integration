@@ -35,15 +35,9 @@ const startServer = async () => {
   await connectDatabase();
 
   server.listen(config.port, () => {
-    console.log('====================================================');
-    console.log(`  HOOKBRIDGE SERVER RUNNING ON PORT ${config.port}`);
-    console.log(`  Environment: ${config.nodeEnv}`);
-    console.log(`  Health Check: http://localhost:${config.port}/api/health`);
-    console.log(`  Meta Webhook GET: http://localhost:${config.port}/webhooks/meta`);
-    console.log(`  Meta Webhook POST: http://localhost:${config.port}/webhooks/meta`);
-    console.log(`  Leads API: http://localhost:${config.port}/api/leads`);
-    console.log(`  Graph API Version: ${config.meta.graphApiVersion}`);
-    console.log('====================================================');
+    console.log(`Server listening on port ${config.port} (${config.nodeEnv})`);
+    console.log(`Webhook endpoint: http://localhost:${config.port}/webhooks/meta`);
+    console.log(`Graph API version: ${config.meta.graphApiVersion}`);
   });
 };
 

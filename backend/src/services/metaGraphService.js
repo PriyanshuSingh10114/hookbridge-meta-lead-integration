@@ -7,22 +7,14 @@ class MetaGraphService {
     this.baseUrl = `https://graph.facebook.com/${this.apiVersion}`;
   }
 
-  /**
-   * Helper to sanitize tokens from logs and error output
-   * @param {string} token
-   */
+  // Masks token to avoid printing sensitive credentials in stdout
   sanitizeToken(token) {
     if (!token || typeof token !== 'string') return 'none';
     if (token.length <= 8) return '***';
     return `${token.substring(0, 4)}...${token.substring(token.length - 4)}`;
   }
 
-  /**
-   * Fetches full lead information from Meta Graph API using leadgen_id
-   * @param {string} leadgenId - Meta lead identifier
-   * @param {string} [customPageAccessToken] - Optional override access token
-   * @returns {Promise<Object>} Meta Graph API lead object
-   */
+  // Fetches full lead payload from Meta Graph API using the leadgen_id
   async getLeadDetails(leadgenId, customPageAccessToken = null) {
     if (!leadgenId) {
       throw new Error('leadgenId is required to retrieve lead details');
@@ -31,10 +23,7 @@ class MetaGraphService {
     const accessToken = customPageAccessToken || config.meta.pageAccessToken;
 
     if (!accessToken) {
-      const errorMsg =
-        'META_PAGE_ACCESS_TOKEN is missing. Please configure it in your environment variables.';
-      console.error(`[META GRAPH API ERROR] ${errorMsg}`);
-      throw new Error(errorMsg);
+      throw new Error('META_PAGE_ACCESS_TOKEN is missing. Please configure it in your environment variables.');
     }
 
     const fields = [
@@ -51,12 +40,6 @@ class MetaGraphService {
 
     const endpoint = `${this.baseUrl}/${leadgenId}`;
 
-    console.log(
-      `[META GRAPH API] Requesting leadgen_id: ${leadgenId} (API version: ${this.apiVersion}, Token: ${this.sanitizeToken(
-        accessToken
-      )})`
-    );
-
     try {
       const response = await axios.get(endpoint, {
         params: {
@@ -69,20 +52,13 @@ class MetaGraphService {
         }
       });
 
-      console.log(
-        `[META GRAPH API SUCCESS] Retrieved leadgen_id: ${leadgenId} (Status: ${response.status})`
-      );
       return response.data;
     } catch (error) {
       this.handleGraphApiError(error, leadgenId);
     }
   }
 
-  /**
-   * Translates Meta Graph API errors into structured, logged errors
-   * @param {Error} error
-   * @param {string} leadgenId
-   */
+  // Translates Meta Graph API error codes into readable error messages
   handleGraphApiError(error, leadgenId) {
     if (error.response && error.response.data && error.response.data.error) {
       const metaErr = error.response.data.error;

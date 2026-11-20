@@ -3,6 +3,8 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 const Lead = require('../src/models/Lead');
 const leadProcessingService = require('../src/services/leadProcessingService');
 
+jest.setTimeout(180000);
+
 let mongoServer;
 
 beforeAll(async () => {

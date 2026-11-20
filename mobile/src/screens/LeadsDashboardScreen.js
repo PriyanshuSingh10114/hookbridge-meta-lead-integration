@@ -27,33 +27,24 @@ export default function LeadsDashboardScreen() {
   const [socketStatus, setSocketStatus] = useState('connecting');
   const [socketId, setSocketId] = useState(null);
 
-  // Keep a ref of lead IDs to prevent duplicate insertion
+  // Avoid duplicate leads from rapid socket events
   const seenLeadIdsRef = useRef(new Set());
 
-  /**
-   * Add a lead to local state with strict duplicate prevention
-   */
+  // Adds newly arrived lead to the top of the list
   const addLeadSafely = useCallback(incomingLead => {
     if (!incomingLead || !incomingLead.leadId) return;
 
-    if (seenLeadIdsRef.current.has(incomingLead.leadId)) {
-      console.log(`[DASHBOARD DUPLICATE SUPPRESSED] Lead ${incomingLead.leadId} already displayed`);
-      return;
-    }
-
+    if (seenLeadIdsRef.current.has(incomingLead.leadId)) return;
     seenLeadIdsRef.current.add(incomingLead.leadId);
 
     setLeads(prevLeads => {
-      // Secondary check against prev state
       const exists = prevLeads.some(l => l.leadId === incomingLead.leadId);
       if (exists) return prevLeads;
       return [incomingLead, ...prevLeads];
     });
   }, []);
 
-  /**
-   * Load initial leads from backend REST API
-   */
+  // Fetch existing leads from backend on mount or pull-to-refresh
   const loadLeads = useCallback(async (isRefresh = false) => {
     try {
       if (isRefresh) {
@@ -66,19 +57,16 @@ export default function LeadsDashboardScreen() {
       const response = await apiService.fetchLeads(1, 50);
       const fetchedLeads = response.data || [];
 
-      // Register fetched IDs in seen set
       fetchedLeads.forEach(l => {
         if (l.leadId) seenLeadIdsRef.current.add(l.leadId);
       });
 
-      // Merge with any real-time leads received during initial loading
       setLeads(prevLeads => {
         const currentSeen = new Set(prevLeads.map(l => l.leadId));
         const newUniqueFromBackend = fetchedLeads.filter(l => !currentSeen.has(l.leadId));
         return [...prevLeads, ...newUniqueFromBackend];
       });
     } catch (err) {
-      console.error('[DASHBOARD FETCH ERROR]', err.message);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -86,14 +74,9 @@ export default function LeadsDashboardScreen() {
     }
   }, []);
 
-  /**
-   * Initialize Socket.IO connection and setup event handlers
-   */
   useEffect(() => {
-    // 1. Fetch existing persisted leads
     loadLeads();
 
-    // 2. Connect to real-time gateway
     socketClient.connect({
       onConnect: id => {
         setSocketStatus('connected');
@@ -107,14 +90,12 @@ export default function LeadsDashboardScreen() {
         setSocketStatus('error');
       },
       onNewLead: payload => {
-        console.log('[DASHBOARD REAL-TIME EVENT] Incoming lead payload:', payload);
-        if (payload && payload.lead) {
+        if (payload?.lead) {
           addLeadSafely(payload.lead);
         }
       }
     });
 
-    // Cleanup on unmount
     return () => {
       socketClient.disconnect();
     };

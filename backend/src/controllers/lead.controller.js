@@ -2,9 +2,7 @@ const Lead = require('../models/Lead');
 const mongoose = require('mongoose');
 const socketService = require('../services/socketService');
 
-/**
- * Retrieve paginated list of leads, newest first
- */
+// Get paginated leads list (newest first)
 const getLeads = async (req, res, next) => {
   try {
     const page = Math.max(1, parseInt(req.query.page, 10) || 1);
@@ -35,9 +33,7 @@ const getLeads = async (req, res, next) => {
   }
 };
 
-/**
- * Retrieve single lead by Meta leadId or Mongo ObjectId
- */
+// Fetch single lead by leadId or mongo id
 const getLeadById = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -67,9 +63,7 @@ const getLeadById = async (req, res, next) => {
   }
 };
 
-/**
- * Create and broadcast a test lead for local real-time verification
- */
+// Helper endpoint to push a test lead and verify real-time socket delivery
 const createTestLead = async (req, res, next) => {
   try {
     const { name, email, phone } = req.body || {};
@@ -88,7 +82,7 @@ const createTestLead = async (req, res, next) => {
 
     res.status(201).json({
       success: true,
-      message: 'Real-time test lead created and broadcasted successfully',
+      message: 'Test lead created and broadcasted',
       data: lead
     });
   } catch (error) {

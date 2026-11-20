@@ -6,11 +6,6 @@ class SocketService {
     this.connectedSockets = new Set();
   }
 
-  /**
-   * Initialize Socket.IO instance attached to the Express HTTP server
-   * @param {import('http').Server} httpServer
-   * @param {string|string[]} corsOrigin
-   */
   init(httpServer, corsOrigin = '*') {
     this.io = new Server(httpServer, {
       cors: {
@@ -25,11 +20,8 @@ class SocketService {
 
     this.io.on('connection', socket => {
       this.connectedSockets.add(socket.id);
-      console.log(
-        `[SOCKET] Client connected: ${socket.id} (Total active clients: ${this.connectedSockets.size})`
-      );
+      console.log(`[ws] Client connected: ${socket.id} (${this.connectedSockets.size} active)`);
 
-      // Send initial acknowledgement to the connected client
       socket.emit('connected', {
         message: 'Connected to HookBridge Real-Time Lead Gateway',
         socketId: socket.id,
@@ -38,29 +30,20 @@ class SocketService {
 
       socket.on('disconnect', reason => {
         this.connectedSockets.delete(socket.id);
-        console.log(
-          `[SOCKET] Client disconnected: ${socket.id} (Reason: ${reason}). Remaining active: ${this.connectedSockets.size}`
-        );
+        console.log(`[ws] Client disconnected: ${socket.id} (${reason})`);
       });
 
       socket.on('error', err => {
-        console.error(`[SOCKET ERROR] Socket ${socket.id}:`, err.message);
+        console.error(`[ws] Socket error (${socket.id}):`, err.message);
       });
     });
 
-    console.log('[SOCKET] Socket.IO server initialized successfully');
     return this.io;
   }
 
-  /**
-   * Broadcast a newly persisted lead to all connected clients
-   * @param {Object} lead - Normalized and persisted Lead document
-   */
+  // Emits 'new_lead' event to all connected React Native clients
   broadcastNewLead(lead) {
-    if (!this.io) {
-      console.warn('[SOCKET WARNING] Cannot broadcast lead: Socket.IO not initialized');
-      return false;
-    }
+    if (!this.io) return false;
 
     const payload = {
       event: 'new_lead',
@@ -83,20 +66,13 @@ class SocketService {
     };
 
     this.io.emit('new_lead', payload);
-    console.log(
-      `[SOCKET BROADCAST] Emitted 'new_lead' for leadId=${lead.leadId} to ${this.connectedSockets.size} active client(s)`
-    );
     return true;
   }
 
-  /**
-   * Get count of currently connected clients
-   */
   getConnectedCount() {
     return this.connectedSockets.size;
   }
 }
 
-// Export singleton instance
 module.exports = new SocketService();
 
