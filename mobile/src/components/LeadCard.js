@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { formatLeadDate } from '../utils/date';
 
 export default function LeadCard({ lead }) {
   const {
@@ -12,13 +13,6 @@ export default function LeadCard({ lead }) {
     leadId,
     formId
   } = lead;
-
-  const formatDate = timestamp => {
-    if (!timestamp) return 'Just now';
-    const d = new Date(timestamp);
-    if (isNaN(d.getTime())) return 'Recently';
-    return `${d.toLocaleDateString()} at ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
-  };
 
   return (
     <View style={styles.card}>
@@ -62,7 +56,7 @@ export default function LeadCard({ lead }) {
 
       {/* Footer: Metadata & Timestamp */}
       <View style={styles.footerRow}>
-        <Text style={styles.timestampText}>{formatDate(submittedAt)}</Text>
+        <Text style={styles.timestampText}>{formatLeadDate(submittedAt)}</Text>
         <Text style={styles.metaIdText} numberOfLines={1}>
           ID: {leadId ? leadId.substring(0, 10) + '...' : 'N/A'}
         </Text>

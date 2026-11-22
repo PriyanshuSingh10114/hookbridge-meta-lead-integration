@@ -1,20 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { formatRelativeTime } from '../utils/date';
 
 export default function LeadStats({ totalLeads, latestLeadTime }) {
-  const formatTime = timestamp => {
-    if (!timestamp) return 'None yet';
-    const date = new Date(timestamp);
-    if (isNaN(date.getTime())) return 'Recently';
-
-    const now = new Date();
-    const diffSec = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    if (diffSec < 60) return 'Just now';
-    if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -23,7 +11,7 @@ export default function LeadStats({ totalLeads, latestLeadTime }) {
       </View>
       <View style={styles.card}>
         <Text style={styles.label}>LATEST SUBMISSION</Text>
-        <Text style={styles.valueSmall}>{formatTime(latestLeadTime)}</Text>
+        <Text style={styles.valueSmall}>{formatRelativeTime(latestLeadTime)}</Text>
       </View>
       <View style={styles.card}>
         <Text style={styles.label}>SYNC MODE</Text>

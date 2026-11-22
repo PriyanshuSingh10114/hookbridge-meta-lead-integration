@@ -4,7 +4,6 @@ import { SOCKET_SERVER_URL } from '../config/env';
 class SocketClient {
   constructor() {
     this.socket = null;
-    this.listeners = new Map();
   }
 
   connect({ onConnect, onDisconnect, onConnectError, onNewLead } = {}) {

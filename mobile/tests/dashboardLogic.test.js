@@ -1,3 +1,5 @@
+const { formatRelativeTime, formatLeadDate } = require('../src/utils/date');
+
 describe('HookBridge Mobile Leads Logic Tests', () => {
   it('should prevent duplicate lead insertion into state', () => {
     const initialLeads = [
@@ -30,16 +32,16 @@ describe('HookBridge Mobile Leads Logic Tests', () => {
     const tenSecondsAgo = new Date(now.getTime() - 10 * 1000).toISOString();
     const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000).toISOString();
 
-    const formatRelativeTime = (timestamp) => {
-      const date = new Date(timestamp);
-      const diffSec = Math.floor((new Date().getTime() - date.getTime()) / 1000);
-      if (diffSec < 60) return 'Just now';
-      if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
-      return 'Earlier';
-    };
-
     expect(formatRelativeTime(tenSecondsAgo)).toBe('Just now');
     expect(formatRelativeTime(fiveMinutesAgo)).toBe('5m ago');
+    expect(formatRelativeTime(null)).toBe('None yet');
+  });
+
+  it('should correctly format full lead dates', () => {
+    expect(formatLeadDate(null)).toBe('Just now');
+    expect(formatLeadDate('invalid-date')).toBe('Recently');
+    const validDate = new Date('2026-11-20T10:30:00Z').toISOString();
+    expect(formatLeadDate(validDate)).toContain('2026');
   });
 
   it('should format connection status badge properties correctly', () => {

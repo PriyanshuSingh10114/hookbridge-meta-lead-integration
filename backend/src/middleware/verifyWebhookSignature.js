@@ -27,7 +27,14 @@ const verifyWebhookSignature = (req, res, next) => {
   }
 
   try {
-    const rawBody = req.rawBody || Buffer.from(JSON.stringify(req.body));
+    const rawBody = req.rawBody || (req.body ? Buffer.from(JSON.stringify(req.body)) : null);
+    if (!rawBody) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing payload for signature verification'
+      });
+    }
+
     const hmac = crypto.createHmac('sha256', appSecret);
     hmac.update(rawBody);
     const expectedSignature = hmac.digest('hex');

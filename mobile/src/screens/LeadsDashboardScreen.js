@@ -57,15 +57,20 @@ export default function LeadsDashboardScreen() {
       const response = await apiService.fetchLeads(1, 50);
       const fetchedLeads = response.data || [];
 
-      fetchedLeads.forEach(l => {
-        if (l.leadId) seenLeadIdsRef.current.add(l.leadId);
-      });
+      if (isRefresh) {
+        seenLeadIdsRef.current = new Set(fetchedLeads.map(l => l.leadId).filter(Boolean));
+        setLeads(fetchedLeads);
+      } else {
+        fetchedLeads.forEach(l => {
+          if (l.leadId) seenLeadIdsRef.current.add(l.leadId);
+        });
 
-      setLeads(prevLeads => {
-        const currentSeen = new Set(prevLeads.map(l => l.leadId));
-        const newUniqueFromBackend = fetchedLeads.filter(l => !currentSeen.has(l.leadId));
-        return [...prevLeads, ...newUniqueFromBackend];
-      });
+        setLeads(prevLeads => {
+          const currentSeen = new Set(prevLeads.map(l => l.leadId));
+          const newUniqueFromBackend = fetchedLeads.filter(l => !currentSeen.has(l.leadId));
+          return [...prevLeads, ...newUniqueFromBackend];
+        });
+      }
     } catch (err) {
       setError(err.message);
     } finally {
