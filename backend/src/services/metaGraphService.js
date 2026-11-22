@@ -7,14 +7,12 @@ class MetaGraphService {
     this.baseUrl = `https://graph.facebook.com/${this.apiVersion}`;
   }
 
-  // Masks token to avoid printing sensitive credentials in stdout
   sanitizeToken(token) {
     if (!token || typeof token !== 'string') return 'none';
     if (token.length <= 8) return '***';
     return `${token.substring(0, 4)}...${token.substring(token.length - 4)}`;
   }
 
-  // Fetches full lead payload from Meta Graph API using the leadgen_id
   async getLeadDetails(leadgenId, customPageAccessToken = null) {
     if (!leadgenId) {
       throw new Error('leadgenId is required to retrieve lead details');
@@ -58,7 +56,6 @@ class MetaGraphService {
     }
   }
 
-  // Translates Meta Graph API error codes into readable error messages
   handleGraphApiError(error, leadgenId) {
     if (error.response && error.response.data && error.response.data.error) {
       const metaErr = error.response.data.error;
@@ -67,7 +64,6 @@ class MetaGraphService {
       console.error(`[META GRAPH API ERROR] Lead ID: ${leadgenId} - Code: ${code}, Subcode: ${error_subcode}, Type: ${type}`);
       console.error(`[META GRAPH API ERROR MESSAGE]: ${message}`);
 
-      // Token invalid or expired
       if (code === 190) {
         if (error_subcode === 463 || error_subcode === 467) {
           throw new Error(`Meta Access Token expired. Please re-generate your Page Access Token. [${code}]`);
@@ -75,19 +71,16 @@ class MetaGraphService {
         throw new Error(`Invalid Meta Access Token: ${message} [${code}]`);
       }
 
-      // Permissions error
       if (code === 200 || code === 298) {
         throw new Error(
           `Insufficient Meta permissions (leads_retrieval / pages_manage_ads required). Details: ${message} [${code}]`
         );
       }
 
-      // Rate limiting
       if (code === 4 || code === 17 || code === 32 || code === 613) {
         throw new Error(`Meta Graph API rate limit reached. Please retry shortly. [${code}]`);
       }
 
-      // Object not found / Lead not accessible
       if (code === 100) {
         throw new Error(`Leadgen object ${leadgenId} not found or unsupported fields requested. [${code}]`);
       }
@@ -100,10 +93,8 @@ class MetaGraphService {
       throw new Error(`Meta Graph API connection timed out for lead ${leadgenId}`);
     }
 
-    console.error(`[META GRAPH API NETWORK ERROR]: ${error.message}`);
     throw error;
   }
 }
 
 module.exports = new MetaGraphService();
-

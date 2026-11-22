@@ -1,13 +1,3 @@
-/**
- * HookBridge End-to-End Local Webhook Simulator
- * 
- * Simulates Meta Lead Ads Testing Tool sending a webhook notification
- * with full X-Hub-Signature-256 HMAC verification.
- * 
- * Usage:
- *   node scripts/simulateLeadAd.js
- */
-
 const axios = require('axios');
 const crypto = require('crypto');
 require('dotenv').config();

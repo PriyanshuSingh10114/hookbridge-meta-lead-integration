@@ -1,7 +1,6 @@
 const crypto = require('crypto');
 const config = require('../config');
 
-// Validates Meta's HMAC-SHA256 signature against the raw request body
 const verifyWebhookSignature = (req, res, next) => {
   const appSecret = config.meta.appSecret;
 
@@ -42,7 +41,6 @@ const verifyWebhookSignature = (req, res, next) => {
     const signatureBuffer = Buffer.from(signature, 'hex');
     const expectedBuffer = Buffer.from(expectedSignature, 'hex');
 
-    // Use constant-time comparison to prevent timing attacks
     if (
       signatureBuffer.length !== expectedBuffer.length ||
       !crypto.timingSafeEqual(signatureBuffer, expectedBuffer)
@@ -63,4 +61,3 @@ const verifyWebhookSignature = (req, res, next) => {
 };
 
 module.exports = verifyWebhookSignature;
-

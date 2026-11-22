@@ -11,6 +11,7 @@ beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const uri = mongoServer.getUri();
   await mongoose.connect(uri);
+  await Lead.init();
 });
 
 afterAll(async () => {
@@ -70,7 +71,6 @@ describe('MongoDB Lead Model & Persistence Tests', () => {
     expect(firstResult.isNew).toBe(true);
     expect(firstResult.lead.leadId).toBe('unique_lead_abc');
 
-    // Attempt to persist the exact same lead again
     const secondResult = await leadProcessingService.persistLead(payload);
     expect(secondResult.isNew).toBe(false);
     expect(secondResult.lead.leadId).toBe('unique_lead_abc');

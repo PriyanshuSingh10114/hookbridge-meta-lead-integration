@@ -14,13 +14,11 @@ describe('HookBridge Mobile Leads Logic Tests', () => {
       return [incomingLead, ...currentLeads];
     };
 
-    // Attempt to add duplicate
     const duplicateLead = { leadId: 'lead_001', name: 'John Doe Duplicate' };
     const result1 = addLeadSafely(initialLeads, duplicateLead);
     expect(result1.length).toBe(1);
     expect(result1[0].name).toBe('John Doe');
 
-    // Add unique new lead
     const newLead = { leadId: 'lead_002', name: 'Jane Smith', email: 'jane@example.com' };
     const result2 = addLeadSafely(result1, newLead);
     expect(result2.length).toBe(2);

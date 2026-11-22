@@ -4,7 +4,6 @@ const app = require('../src/app');
 const config = require('../src/config');
 const webhookController = require('../src/controllers/webhook.controller');
 
-// Spy on async lead processor so we can verify webhook dispatch
 jest.spyOn(webhookController, 'processLeadEventAsync').mockImplementation(() => Promise.resolve());
 
 describe('Meta Webhook Integration Tests', () => {

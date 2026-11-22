@@ -2,7 +2,6 @@ const Lead = require('../models/Lead');
 const mongoose = require('mongoose');
 const socketService = require('../services/socketService');
 
-// Get paginated leads list (newest first)
 const getLeads = async (req, res, next) => {
   try {
     const page = Math.max(1, parseInt(req.query.page, 10) || 1);
@@ -33,7 +32,6 @@ const getLeads = async (req, res, next) => {
   }
 };
 
-// Fetch single lead by leadId or mongo id
 const getLeadById = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -63,7 +61,7 @@ const getLeadById = async (req, res, next) => {
   }
 };
 
-// Helper endpoint to push a test lead and verify real-time socket delivery
+
 const createTestLead = async (req, res, next) => {
   try {
     const { name, email, phone } = req.body || {};

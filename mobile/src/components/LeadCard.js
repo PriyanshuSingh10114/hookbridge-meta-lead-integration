@@ -16,7 +16,6 @@ export default function LeadCard({ lead }) {
 
   return (
     <View style={styles.card}>
-      {/* Top Header: Name & Badges */}
       <View style={styles.headerRow}>
         <View style={styles.nameContainer}>
           <Text style={styles.name} numberOfLines={1}>
@@ -35,9 +34,7 @@ export default function LeadCard({ lead }) {
         </View>
       </View>
 
-      {/* Contact Details */}
       <View style={styles.detailsContainer}>
-        {/* Email */}
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Email:</Text>
           <Text style={styles.infoValue} numberOfLines={1} selectable>
@@ -45,7 +42,6 @@ export default function LeadCard({ lead }) {
           </Text>
         </View>
 
-        {/* Phone */}
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Phone:</Text>
           <Text style={styles.infoValue} selectable>
@@ -54,7 +50,6 @@ export default function LeadCard({ lead }) {
         </View>
       </View>
 
-      {/* Footer: Metadata & Timestamp */}
       <View style={styles.footerRow}>
         <Text style={styles.timestampText}>{formatLeadDate(submittedAt)}</Text>
         <Text style={styles.metaIdText} numberOfLines={1}>
@@ -107,26 +102,27 @@ const styles = StyleSheet.create({
   },
   sourceBadgeText: {
     color: '#EFF6FF',
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: '700',
     letterSpacing: 0.3
   },
   testBadge: {
     backgroundColor: '#D97706',
     paddingVertical: 3,
-    paddingHorizontal: 6,
+    paddingHorizontal: 8,
     borderRadius: 6
   },
   testBadgeText: {
-    color: '#FEF3C7',
+    color: '#FFFBEB',
     fontSize: 10,
-    fontWeight: '800'
+    fontWeight: '800',
+    letterSpacing: 0.5
   },
   detailsContainer: {
+    marginBottom: 12,
     backgroundColor: '#0F172A',
     borderRadius: 8,
-    padding: 10,
-    marginBottom: 12
+    padding: 10
   },
   infoRow: {
     flexDirection: 'row',
@@ -134,16 +130,16 @@ const styles = StyleSheet.create({
     marginVertical: 3
   },
   infoLabel: {
-    width: 55,
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#64748B'
+    width: 60,
+    fontSize: 12,
+    color: '#64748B',
+    fontWeight: '600'
   },
   infoValue: {
     flex: 1,
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#E2E8F0'
+    fontSize: 13,
+    color: '#E2E8F0',
+    fontWeight: '500'
   },
   footerRow: {
     flexDirection: 'row',
@@ -151,17 +147,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopWidth: 1,
     borderTopColor: '#334155',
-    paddingTop: 8
+    paddingTop: 8,
+    marginTop: 4
   },
   timestampText: {
     fontSize: 11,
-    color: '#94A3B8',
-    fontWeight: '500'
+    color: '#64748B'
   },
   metaIdText: {
-    fontSize: 11,
-    color: '#64748B',
+    fontSize: 10,
+    color: '#475569',
     fontFamily: 'monospace'
   }
 });
-

@@ -1,7 +1,3 @@
-/**
- * Date and timestamp formatting utilities for HookBridge Mobile
- */
-
 const formatLeadDate = timestamp => {
   if (!timestamp) return 'Just now';
   const d = new Date(timestamp);

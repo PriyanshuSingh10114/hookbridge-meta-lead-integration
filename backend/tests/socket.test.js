@@ -60,7 +60,6 @@ describe('Socket.IO Real-Time Gateway Tests', () => {
       done();
     });
 
-    // Broadcast the lead
     socketService.broadcastNewLead(mockLead);
   });
 });

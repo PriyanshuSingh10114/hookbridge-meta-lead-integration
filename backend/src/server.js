@@ -6,10 +6,8 @@ const socketService = require('./services/socketService');
 
 const server = http.createServer(app);
 
-// Attach Socket.IO to HTTP server
 socketService.init(server, config.cors.origin);
 
-// MongoDB connection
 const connectDatabase = async () => {
   try {
     await mongoose.connect(config.mongoUri, {
@@ -30,7 +28,6 @@ mongoose.connection.on('reconnected', () => {
   console.log('[DATABASE] MongoDB connection re-established');
 });
 
-// Start HTTP and WebSocket server
 const startServer = async () => {
   await connectDatabase();
 
@@ -41,7 +38,6 @@ const startServer = async () => {
   });
 };
 
-// Graceful shutdown handling
 const shutdown = async () => {
   console.log('\n[SERVER] Graceful shutdown initiated...');
   server.close(async () => {
@@ -64,4 +60,3 @@ if (require.main === module) {
 }
 
 module.exports = { server, startServer };
-

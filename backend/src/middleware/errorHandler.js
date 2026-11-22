@@ -8,7 +8,6 @@ const errorHandler = (err, req, res, next) => {
     code: err.code
   });
 
-  // Handle Mongoose duplicate key error (code 11000)
   if (err.code === 11000) {
     return res.status(409).json({
       success: false,
@@ -17,7 +16,6 @@ const errorHandler = (err, req, res, next) => {
     });
   }
 
-  // Handle Mongoose validation errors
   if (err.name === 'ValidationError') {
     const errors = Object.values(err.errors).map(e => e.message);
     return res.status(400).json({
@@ -35,4 +33,3 @@ const errorHandler = (err, req, res, next) => {
 };
 
 module.exports = errorHandler;
-

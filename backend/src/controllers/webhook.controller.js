@@ -3,7 +3,7 @@ const metaGraphService = require('../services/metaGraphService');
 const leadProcessingService = require('../services/leadProcessingService');
 const socketService = require('../services/socketService');
 
-// Meta webhook handshake verification (GET /webhooks/meta)
+
 const verifyWebhook = (req, res) => {
   const mode = req.query['hub.mode'];
   const verifyToken = req.query['hub.verify_token'];
@@ -22,10 +22,9 @@ const verifyWebhook = (req, res) => {
   return res.status(403).send('Forbidden: Verification token mismatch');
 };
 
-// Background task to fetch lead from Graph API, persist, and emit via Socket.IO
 const processLeadEventAsync = async (leadgenId, metadata) => {
   try {
-    // 1. Fetch full details from Meta Graph API
+
     let graphData;
     try {
       graphData = await metaGraphService.getLeadDetails(leadgenId);
@@ -34,13 +33,12 @@ const processLeadEventAsync = async (leadgenId, metadata) => {
       return;
     }
 
-    // 2. Normalize fields into standard format
+
     const normalized = leadProcessingService.normalizeLeadData(graphData, metadata);
 
-    // 3. Save to MongoDB (handles deduplication)
+
     const { lead, isNew } = await leadProcessingService.persistLead(normalized);
 
-    // 4. Only broadcast over socket if this is a genuinely new lead
     if (isNew) {
       socketService.broadcastNewLead(lead);
       console.log(`[lead-pipeline] Broadcasted new lead ${lead.leadId} (${lead.name})`);
@@ -52,7 +50,6 @@ const processLeadEventAsync = async (leadgenId, metadata) => {
   }
 };
 
-// Meta webhook event receiver (POST /webhooks/meta)
 const handleWebhookEvent = (req, res) => {
   const body = req.body;
 
@@ -60,7 +57,6 @@ const handleWebhookEvent = (req, res) => {
     return res.status(404).json({ success: false, error: 'Expected object: page' });
   }
 
-  // Acknowledge immediately to avoid Meta delivery timeouts
   res.status(200).send('EVENT_RECEIVED');
 
   if (!Array.isArray(body.entry)) return;
@@ -85,7 +81,6 @@ const handleWebhookEvent = (req, res) => {
           created_time: val.created_time
         };
 
-        // Hand off to async pipeline
         module.exports.processLeadEventAsync(leadgenId, metadata);
       }
     });

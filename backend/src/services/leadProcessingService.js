@@ -1,7 +1,6 @@
 const Lead = require('../models/Lead');
 
 class LeadProcessingService {
-  // Extracts common contact fields from Meta's field_data array
   extractContactFields(fieldData = []) {
     let name = 'N/A';
     let firstName = '';
@@ -40,7 +39,6 @@ class LeadProcessingService {
     return { name, email, phone };
   }
 
-  // Normalizes Graph API response + webhook metadata into standard Lead document structure
   normalizeLeadData(graphData, webhookMetadata = {}) {
     if (!graphData || !graphData.id) {
       throw new Error('Invalid Graph API lead data: missing id');
@@ -82,7 +80,6 @@ class LeadProcessingService {
     };
   }
 
-  // Saves lead to MongoDB; handles duplicate detection via index constraint
   async persistLead(normalizedLead) {
     if (!normalizedLead || !normalizedLead.leadId) {
       throw new Error('Cannot persist lead without valid leadId');
@@ -97,10 +94,9 @@ class LeadProcessingService {
       const newLead = await Lead.create(normalizedLead);
       return { lead: newLead, isNew: true };
     } catch (err) {
-      // Handle concurrent insert race condition (Mongo duplicate key code 11000)
       if (err.code === 11000) {
-        const duplicateLead = await Lead.findOne({ leadId: normalizedLead.leadId });
-        return { lead: duplicateLead, isNew: false };
+        const existingLead = await Lead.findOne({ leadId: normalizedLead.leadId });
+        return { lead: existingLead, isNew: false };
       }
       throw err;
     }
@@ -108,4 +104,3 @@ class LeadProcessingService {
 }
 
 module.exports = new LeadProcessingService();
-

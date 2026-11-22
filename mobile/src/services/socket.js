@@ -48,9 +48,6 @@ class SocketClient {
     }
   }
 
-  /**
-   * Check if currently connected
-   */
   isConnected() {
     return Boolean(this.socket && this.socket.connected);
   }

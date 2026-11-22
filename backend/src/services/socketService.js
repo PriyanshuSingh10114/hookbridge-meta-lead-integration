@@ -41,7 +41,6 @@ class SocketService {
     return this.io;
   }
 
-  // Emits 'new_lead' event to all connected React Native clients
   broadcastNewLead(lead) {
     if (!this.io) return false;
 
@@ -75,4 +74,3 @@ class SocketService {
 }
 
 module.exports = new SocketService();
-

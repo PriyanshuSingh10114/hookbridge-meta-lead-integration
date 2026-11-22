@@ -104,8 +104,6 @@ const LeadSchema = new mongoose.Schema(
   }
 );
 
-// Compound and retrieval indexes
 LeadSchema.index({ submittedAt: -1, leadId: 1 });
 
 module.exports = mongoose.model('Lead', LeadSchema);
-

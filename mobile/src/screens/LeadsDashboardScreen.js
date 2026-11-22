@@ -27,10 +27,8 @@ export default function LeadsDashboardScreen() {
   const [socketStatus, setSocketStatus] = useState('connecting');
   const [socketId, setSocketId] = useState(null);
 
-  // Avoid duplicate leads from rapid socket events
   const seenLeadIdsRef = useRef(new Set());
 
-  // Adds newly arrived lead to the top of the list
   const addLeadSafely = useCallback(incomingLead => {
     if (!incomingLead || !incomingLead.leadId) return;
 
@@ -44,7 +42,6 @@ export default function LeadsDashboardScreen() {
     });
   }, []);
 
-  // Fetch existing leads from backend on mount or pull-to-refresh
   const loadLeads = useCallback(async (isRefresh = false) => {
     try {
       if (isRefresh) {
@@ -114,13 +111,10 @@ export default function LeadsDashboardScreen() {
       <Header />
 
       <View style={styles.container}>
-        {/* Connection Status Badge */}
         <ConnectionBadge status={socketStatus} socketId={socketId} />
 
-        {/* Lead Statistics Panel */}
         <LeadStats totalLeads={leads.length} latestLeadTime={latestLeadTimestamp} />
 
-        {/* Error State with Retry */}
         {error && (
           <View style={styles.errorBox}>
             <Text style={styles.errorText}>⚠️ {error}</Text>
@@ -130,7 +124,6 @@ export default function LeadsDashboardScreen() {
           </View>
         )}
 
-        {/* Content Section: Loader, List or Empty State */}
         {loading ? (
           <View style={styles.loaderContainer}>
             <ActivityIndicator size="large" color="#3B82F6" />
@@ -210,4 +203,3 @@ const styles = StyleSheet.create({
     fontWeight: '700'
   }
 });
-

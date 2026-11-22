@@ -10,11 +10,6 @@ const apiClient = axios.create({
   }
 });
 
-/**
- * Fetch all leads from HookBridge backend
- * @param {number} page
- * @param {number} limit
- */
 export const fetchLeads = async (page = 1, limit = 50) => {
   try {
     const response = await apiClient.get('/api/leads', {
@@ -32,9 +27,6 @@ export const fetchLeads = async (page = 1, limit = 50) => {
   }
 };
 
-/**
- * Check backend health status
- */
 export const checkBackendHealth = async () => {
   try {
     const response = await apiClient.get('/api/health');
@@ -48,4 +40,3 @@ export default {
   fetchLeads,
   checkBackendHealth
 };
-

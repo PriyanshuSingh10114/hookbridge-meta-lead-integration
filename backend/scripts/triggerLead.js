@@ -1,12 +1,4 @@
-/**
- * HookBridge Real-Time Lead Trigger
- * Sends a new lead to the backend, persists to MongoDB, and broadcasts to Socket.IO.
- * 
- * Usage:
- *   node scripts/triggerLead.js "Peter Parker" "peter@dailybugle.com" "+1-555-SPIDER"
- */
 const http = require('http');
-
 const name = process.argv[2] || 'Bruce Wayne';
 const email = process.argv[3] || 'bruce@wayne-enterprises.com';
 const phone = process.argv[4] || '+1-555-BATMAN';
