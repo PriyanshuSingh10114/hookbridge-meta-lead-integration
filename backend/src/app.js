@@ -7,6 +7,7 @@ const errorHandler = require('./middleware/errorHandler');
 const healthRoutes = require('./routes/health.routes');
 const leadRoutes = require('./routes/lead.routes');
 const webhookRoutes = require('./routes/webhook.routes');
+const simulatorRoutes = require('./routes/simulator.routes');
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use(requestLogger);
 app.use('/api', healthRoutes);
 app.use('/api', leadRoutes);
 app.use('/webhooks', webhookRoutes);
+app.use('/simulator', simulatorRoutes);
 
 app.use((req, res) => {
   res.status(404).json({
