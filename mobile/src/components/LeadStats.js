@@ -13,6 +13,10 @@ export default function LeadStats({ totalLeads, latestLeadTime }) {
         <Text style={styles.label}>LATEST SUBMISSION</Text>
         <Text style={styles.valueSmall}>{formatRelativeTime(latestLeadTime)}</Text>
       </View>
+      <View style={styles.card}>
+        <Text style={styles.label}>SYNC MODE</Text>
+        <Text style={styles.valueBadge}>REAL-TIME</Text>
+      </View>
     </View>
   );
 }
@@ -20,21 +24,22 @@ export default function LeadStats({ totalLeads, latestLeadTime }) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     marginVertical: 12,
-    gap: 12
+    gap: 10
   },
   card: {
     flex: 1,
     backgroundColor: '#1E293B',
     borderRadius: 12,
-    paddingVertical: 14,
-    paddingHorizontal: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: '#334155',
     alignItems: 'center'
   },
   label: {
-    fontSize: 11,
+    fontSize: 10,
     color: '#94A3B8',
     fontWeight: '700',
     marginBottom: 4,
@@ -46,9 +51,20 @@ const styles = StyleSheet.create({
     color: '#F8FAFC'
   },
   valueSmall: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '700',
     color: '#38BDF8',
     marginTop: 4
+  },
+  valueBadge: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#34D399',
+    backgroundColor: '#064E3B',
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 6,
+    marginTop: 4
   }
 });
+

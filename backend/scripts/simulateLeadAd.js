@@ -36,6 +36,13 @@ const hmac = crypto.createHmac('sha256', APP_SECRET);
 hmac.update(rawBody);
 const signature = `sha256=${hmac.digest('hex')}`;
 
+console.log('----------------------------------------------------');
+console.log('  HOOKBRIDGE META LEAD ADS WEBHOOK SIMULATOR');
+console.log('----------------------------------------------------');
+console.log(`Target: ${WEBHOOK_URL}`);
+console.log(`Simulated Leadgen ID: ${simulatedLeadgenId}`);
+console.log(`Generated HMAC Signature: ${signature.substring(0, 20)}...`);
+
 async function run() {
   try {
     const res = await axios.post(WEBHOOK_URL, testPayload, {
@@ -45,14 +52,16 @@ async function run() {
       }
     });
 
-    console.log(`Webhook sent (${res.status} ${res.data}) - Leadgen ID: ${simulatedLeadgenId}`);
+    console.log(`[RESPONSE] Status: ${res.status} (${res.data})`);
+    console.log('Notification dispatched! Check backend and React Native app.');
   } catch (err) {
     if (err.response) {
-      console.error(`Webhook error (${err.response.status}):`, err.response.data);
+      console.error(`[ERROR] Server responded with ${err.response.status}:`, err.response.data);
     } else {
-      console.error('Webhook error:', err.message);
+      console.error('[ERROR] Failed to send webhook:', err.message);
     }
   }
 }
 
 run();
+

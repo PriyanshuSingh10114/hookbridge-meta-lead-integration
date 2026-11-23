@@ -2,6 +2,8 @@ const axios = require('axios');
 const config = require('../config');
 
 class MetaGraphService {
+  static mockLeads = new Map();
+
   constructor() {
     this.apiVersion = config.meta.graphApiVersion;
     this.baseUrl = `https://graph.facebook.com/${this.apiVersion}`;
@@ -18,15 +20,20 @@ class MetaGraphService {
       throw new Error('leadgenId is required to retrieve lead details');
     }
 
-    if (String(leadgenId).startsWith('sim_')) {
+    if (MetaGraphService.mockLeads.has(leadgenId)) {
+      return MetaGraphService.mockLeads.get(leadgenId);
+    }
+
+    if (leadgenId.startsWith('sim_')) {
       return {
-        id: String(leadgenId),
+        id: leadgenId,
         created_time: Math.floor(Date.now() / 1000),
-        form_id: 'form_102938',
+        form_id: 'form_11223344',
+        ad_id: 'ad_99887766',
         field_data: [
-          { name: 'full_name', values: ['Sophia Vance'] },
-          { name: 'email', values: ['sophia.vance@apex.io'] },
-          { name: 'phone_number', values: ['+1-555-0199'] }
+          { name: 'full_name', values: ['Sarah Connor'] },
+          { name: 'email', values: ['sarah.connor@sky-res.org'] },
+          { name: 'phone_number', values: ['+1-555-888-9999'] }
         ]
       };
     }
@@ -111,3 +118,4 @@ class MetaGraphService {
 }
 
 module.exports = new MetaGraphService();
+module.exports.MetaGraphService = MetaGraphService;
