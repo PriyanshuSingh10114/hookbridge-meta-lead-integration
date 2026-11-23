@@ -74,7 +74,8 @@ HookBridge/
 │   ├── tests/                            # Mobile deduplication tests
 │   ├── App.js
 │   └── package.json
-└── docs/                                 # Setup and reference guides
+└── docs/
+    └── assumptions.md                    # Engineering assumptions
 ```
 
 ---
@@ -207,7 +208,7 @@ To test the entire real-time pipeline locally:
 cd backend
 npm test
 
-# Run mobile tests (3 tests)
+# Run mobile tests (4 tests)
 cd ../mobile
 npm test
 ```

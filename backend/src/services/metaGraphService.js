@@ -5,11 +5,6 @@ class MetaGraphService {
   constructor() {
     this.apiVersion = config.meta.graphApiVersion;
     this.baseUrl = `https://graph.facebook.com/${this.apiVersion}`;
-    this.simulatedLeads = new Map();
-  }
-
-  registerSimulatedLead(leadgenId, data) {
-    this.simulatedLeads.set(String(leadgenId), data);
   }
 
   sanitizeToken(token) {
@@ -23,25 +18,11 @@ class MetaGraphService {
       throw new Error('leadgenId is required to retrieve lead details');
     }
 
-    if (this.simulatedLeads.has(String(leadgenId))) {
-      const sim = this.simulatedLeads.get(String(leadgenId));
-      return {
-        id: String(leadgenId),
-        created_time: Math.floor(Date.now() / 1000),
-        form_id: 'form_meta_102938',
-        field_data: [
-          { name: 'full_name', values: [sim.name || 'Sophia Vance'] },
-          { name: 'email', values: [sim.email || 'sophia.vance@apex.io'] },
-          { name: 'phone_number', values: [sim.phone || '+1-555-0199'] }
-        ]
-      };
-    }
-
     if (String(leadgenId).startsWith('sim_')) {
       return {
         id: String(leadgenId),
         created_time: Math.floor(Date.now() / 1000),
-        form_id: 'form_meta_102938',
+        form_id: 'form_102938',
         field_data: [
           { name: 'full_name', values: ['Sophia Vance'] },
           { name: 'email', values: ['sophia.vance@apex.io'] },
