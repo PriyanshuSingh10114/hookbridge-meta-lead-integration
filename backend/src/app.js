@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const config = require('./config');
 const requestLogger = require('./middleware/requestLogger');
 const errorHandler = require('./middleware/errorHandler');
@@ -27,6 +28,8 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 
 app.use(requestLogger);
+
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/api', healthRoutes);
 app.use('/api', leadRoutes);
