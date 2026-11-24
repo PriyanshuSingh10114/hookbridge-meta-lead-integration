@@ -1,6 +1,7 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { formatLeadDate } from '../utils/date';
+import { updateLeadStatus } from '../services/api';
 
 export default function LeadCard({ lead }) {
   const {
@@ -13,6 +14,28 @@ export default function LeadCard({ lead }) {
     leadId,
     formId
   } = lead;
+
+  const [status, setStatus] = useState(lead.status || 'draft');
+  const [updating, setUpdating] = useState(false);
+
+  const toggleStatus = async () => {
+    const next = status === 'active' ? 'draft' : 'active';
+    setUpdating(true);
+
+    try {
+      const targetId = leadId || lead._id || lead.id;
+      const response = await updateLeadStatus(targetId, next);
+      if (response && response.data && response.data.status) {
+        setStatus(response.data.status);
+      } else {
+        setStatus(next);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setUpdating(false);
+    }
+  };
 
   return (
     <View style={styles.card}>
@@ -35,6 +58,25 @@ export default function LeadCard({ lead }) {
       </View>
 
       <View style={styles.detailsContainer}>
+        <View style={styles.infoRow}>
+          <Text style={styles.infoLabel}>Status:</Text>
+          <TouchableOpacity
+            onPress={toggleStatus}
+            disabled={updating}
+            style={[
+              styles.statusButton,
+              {
+                backgroundColor: status === 'active' ? '#10B981' : '#64748B',
+                opacity: updating ? 0.6 : 1
+              }
+            ]}
+          >
+            <Text style={styles.statusButtonText}>
+              {updating ? 'Updating...' : status.toUpperCase()}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Email:</Text>
           <Text style={styles.infoValue} numberOfLines={1} selectable>
@@ -127,7 +169,7 @@ const styles = StyleSheet.create({
   infoRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 3
+    marginVertical: 4
   },
   infoLabel: {
     width: 60,
@@ -140,6 +182,17 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#E2E8F0',
     fontWeight: '500'
+  },
+  statusButton: {
+    paddingVertical: 3,
+    paddingHorizontal: 8,
+    borderRadius: 6
+  },
+  statusButtonText: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 0.5
   },
   footerRow: {
     flexDirection: 'row',

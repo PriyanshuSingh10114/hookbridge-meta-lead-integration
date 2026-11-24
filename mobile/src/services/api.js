@@ -36,7 +36,18 @@ export const checkBackendHealth = async () => {
   }
 };
 
+export const updateLeadStatus = async (id, status) => {
+  try {
+    const response = await apiClient.patch(`/api/leads/${id}/status`, { status });
+    return response.data;
+  } catch (error) {
+    const fallback = await apiClient.patch(`/api/leads/${id}`, { status });
+    return fallback.data;
+  }
+};
+
 export default {
   fetchLeads,
-  checkBackendHealth
+  checkBackendHealth,
+  updateLeadStatus
 };

@@ -196,10 +196,10 @@ const submitSimulatedLead = async (req, res, next) => {
       form_id: formId || 'form_11223344',
       ad_id: 'ad_99887766',
       field_data: [
-        { name: 'full_name', values: [name || 'Marcus Vance'] },
-        { name: 'email', values: [email || 'marcus.vance@apexlogistics.com'] },
-        { name: 'phone_number', values: [phone || '+1-415-555-0198'] },
-        { name: 'company_name', values: [company || 'Apex Global Logistics'] }
+        { name: 'full_name', values: [name] },
+        { name: 'email', values: [email] },
+        { name: 'phone_number', values: [phone] },
+        { name: 'company_name', values: [company] }
       ]
     });
 

@@ -78,6 +78,11 @@ const LeadSchema = new mongoose.Schema(
       type: Date,
       default: Date.now
     },
+    status:{
+      type:String,
+      enum:['active','draft'],
+      default:'draft'
+    },
     source: {
       type: String,
       default: 'Meta Lead Ads',

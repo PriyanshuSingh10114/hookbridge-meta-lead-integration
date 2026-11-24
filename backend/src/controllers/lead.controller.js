@@ -61,16 +61,15 @@ const getLeadById = async (req, res, next) => {
   }
 };
 
-
 const createTestLead = async (req, res, next) => {
   try {
     const { name, email, phone } = req.body || {};
     const leadId = 'lead_' + Date.now();
     const lead = await Lead.create({
       leadId,
-      name: name || 'Bruce Wayne',
-      email: email || 'bruce@wayne-enterprises.com',
-      phone: phone || '+1-555-BATMAN',
+      name: name || 'Priyanshu Singh',
+      email: email || 'priyanshu@wayne-enterprises.com',
+      phone: phone || '+1-555-000112233',
       source: 'Meta Lead Ads',
       isTestLead: true,
       submittedAt: new Date()
@@ -88,9 +87,46 @@ const createTestLead = async (req, res, next) => {
   }
 };
 
+const updateLeadStatus = async (req, res, next) => {
+  try {
+    const { status } = req.body || {};
+    if (!['active', 'draft'].includes(status)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid Status'
+      });
+    }
+
+    let lead = await Lead.findOneAndUpdate(
+      { leadId: req.params.id },
+      { $set: { status } },
+      { new: true, runValidators: true }
+    );
+
+    if (!lead && mongoose.Types.ObjectId.isValid(req.params.id)) {
+      lead = await Lead.findByIdAndUpdate(
+        req.params.id,
+        { $set: { status } },
+        { new: true, runValidators: true }
+      );
+    }
+
+    if (!lead) {
+      return res.status(404).json({
+        success: false,
+        error: 'Lead not found'
+      });
+    }
+
+    res.json({ success: true, data: lead });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getLeads,
   getLeadById,
-  createTestLead
+  createTestLead,
+  updateLeadStatus
 };
-
